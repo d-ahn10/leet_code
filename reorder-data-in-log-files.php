@@ -1,14 +1,9 @@
 <?php
 
 
-$test_case = [
-                "0" => "dig1 8 1 5 1",
-                "1" => "let1 art can",
-                "2" => "dig2 3 6",
-                "3" => "let2 own kit dig",
-                "4" => "let3 art zero"
-            ];
-
+$test_case = ["dig1 8 1 5 1","let1 art can","dig2 3 6","let2 own kit dig","let3 art zero"];
+$test_case2 =  ["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"];
+$test_case3 = ["j mo", "5 m w", "g 07", "o 2 0", "t q h"];
 
 /**
  * @param String[] $logs
@@ -16,61 +11,45 @@ $test_case = [
  */
 function reorderLogFiles($logs) 
 {
-    // need to sort by second item of each string, if second item is same
-    // then need to check third item of each string.
-    // order alphabetically/lexicographically.
-    // add dig-logs last in the same order.
     $dig_arr = [];
     $let_arr = [];
-    $let_arr_v2 = [];
+    $exploded_let_arr = [];
+    $sorted_let_arr = [];
+    $better_sorted_arr = [];
 
     foreach ($logs as $key) {
-
         $word_arr = explode(' ', $key);
-        $let_dig_check = substr($word_arr[0], 0, 3);
-
-        if ($let_dig_check === "dig") {
+        
+        if (is_numeric($word_arr[1])) {
             $dig_arr[] = $key;
-        } elseif ($let_dig_check === "let") {
+        } else {
             $let_arr[] = $key;
-        } else {
-            echo 'something is not right';
-            echo "\n this is key: $key \n";
-            exit;
-        }
-        // echo "\n this is let_dig_check: $let_dig_check \n";
-        // exit;
-    }
-
-    for ($i = 0; $i < count($let_arr); $i++) {
-        $let_arr_each1 = explode(' ', $let_arr[$i]);
-
-        $a = $let_arr_each[1];
-        $a2 = $let_arr_each[1];
-        echo $a;
-        exit;
-
-        // print_r($let_arr_each);
-        // exit;
-
-        if (empty($let_arr[$i+1])) {
-            $let_arr_v2[] = $let_arr[$i];
-            echo "\n for loop error \n";
-            break;
-        }
-        if ($let_arr_each[1] < $let_arr_each[1]) {
-            $let_arr_v2[] = $let_arr[$i];
-        } else {
-            $let_arr_v2[] = $let_arr[$i];
         }
     }
-    print_r($let_arr);
-    print_r($let_arr_v2);
-    echo "\n work done \n";
-    exit;
+
+    foreach ($let_arr as $key) {
+        $exploded_let_arr[] = explode(' ', $key);
+    }
+    
+    for ($i = 0; $i < count($exploded_let_arr); $i++) {
+        $first_item = array_shift($exploded_let_arr[$i]);
+        array_push($exploded_let_arr[$i], $first_item);
+        $sorted_let_arr[] = implode(' ', $exploded_let_arr[$i]);
+    }
+
+    asort($sorted_let_arr);
+
+    foreach ($sorted_let_arr as $key => $value) {
+        $better_sorted_arr[] = $let_arr[$key];
+    }
+
+    $arr_complete = array_merge($better_sorted_arr, $dig_arr);
+    return $arr_complete;
 }
 
 
-reorderLogFiles($test_case);
+// reorderLogFiles($test_case); // ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 3 6"]
+// reorderLogFiles($test_case2); // ["g1 act car","a8 act zoo","ab1 off key dog","a1 9 2 3 1","zo4 4 7"]
+reorderLogFiles($test_case3); // ["5 m w","j mo","t q h","g 07","o 2 0"]
 
 
