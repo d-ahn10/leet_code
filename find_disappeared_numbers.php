@@ -7,13 +7,19 @@ class Solution {
      * @return Integer[]
      */
     function findDisappearedNumbers($nums) {
-        $coun = count($nums);
-        $output = [];
-        for ($i = 1; $i < $coun; $i++) {
-            if(!array_search($i, $nums)) {
-                $output[] = $i;
+        foreach ($nums as $key => $val) {
+            $index = abs($val) - 1;
+            $nums[$index] = abs($nums[$index]) * -1;
+        }
+        
+        $result = [];
+        
+        foreach ($nums as $key => $val) {
+            if ($val > 0) {
+                array_push($result, $key + 1);
             }
         }
-        return $output;
+        
+        return $result;
     }
 }

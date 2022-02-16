@@ -2,23 +2,19 @@
  * @param {number[]} nums
  * @return {number[]}
  */
-var findDisappearedNumbers = function(nums) {
-    let range = nums.length;
-    const realNums = grabSeries(nums);
-    const missingNums = [];
-
-    for (let i = 0; i < range; i++) {
-        if (!nums.includes(realNums[i])) {
-            missingNums.push(realNums[i]);
+ var findDisappearedNumbers = function(nums) {
+    for (let i = 0; i < nums.length; i++) {
+        let j = Math.abs(nums[i]) - 1;
+        nums[j] = Math.abs(nums[j]) * -1;
+    }
+    
+    let result = [];
+    
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] > 0) {
+            result.push(i + 1);
         }
     }
-    return missingNums;
+    
+    return result;
 };
-
-const grabSeries = function(numsList) {
-    const numbersList = [];
-    for (let i = 1; i < numsList.length+1; i++) {
-        numbersList.push(i);
-    }
-    return numbersList;
-}
